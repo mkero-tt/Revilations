@@ -98,7 +98,20 @@ namespace Revilations.Revit {
         }
 
         void SetElementDatas(FamilyInstance elem, FamilyInstance parentElement, RevilationPad pad) {
-            
+            //set the pad id
+            elem.LookupParameter("PadId").Set(pad.RevitElement.Id.IntegerValue.ToString());
+
+            //set the parent ids
+            var parentIdsParam = elem.LookupParameter("Parents");
+            var parentIdsString = parentIdsParam.AsString();
+            var parentIdString = (parentIdsString.Equals(string.Empty)) ? $"{parentElement.Id.IntegerValue}" : $"{parentIdsString};{parentElement.Id.IntegerValue}";
+            parentIdsParam.Set(parentIdString);
+
+            //set the child ids
+            var childrenIdsParam = parentElement.LookupParameter("Children");
+            var childrenIdsString = childrenIdsParam.AsString();
+            var childrenIdString = (childrenIdsString.Equals(string.Empty)) ? $"{elem.Id.IntegerValue}" : $"{childrenIdsString};{elem.Id.IntegerValue}";
+            childrenIdsParam.Set(childrenIdString);
         }
     }
 }
