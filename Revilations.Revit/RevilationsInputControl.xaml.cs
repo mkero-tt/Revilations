@@ -93,6 +93,7 @@ namespace Revilations.Revit {
                     label.Content = instName;
 
                     var dropDown = new ComboBox();
+                    dropDown.Width = 150;
                     dropDown.Items.Add("");
                     foreach (var view in this.allSymbols) {
                         dropDown.Items.Add(view.Name);
@@ -139,7 +140,11 @@ namespace Revilations.Revit {
         }
 
         private void buttonSelectView_Click(object sender, RoutedEventArgs e) {
-
+            var viewSelector = new ViewSelectorControl(this.allViews);
+            viewSelector.ShowDialog();
+            if (viewSelector.WasViewSelected) {
+                this.selectedView = this.allViews[viewSelector.SelectedIndex];
+            }
         }
     }
 }

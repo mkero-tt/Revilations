@@ -52,9 +52,16 @@
     <Compile Include="RevilationsInputControl.xaml.cs">
       <DependentUpon>RevilationsInputControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewSelectorControl.xaml.cs">
+      <DependentUpon>ViewSelectorControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="RevilationsInputControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewSelectorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

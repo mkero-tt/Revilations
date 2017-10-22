@@ -13,6 +13,9 @@ namespace Revilations.Revit {
         private bool isMaster;
         private Transform transform;
 
+        private XYZ translationVector;
+        private double rotation;
+
         public RevilationPad(FamilyInstance revitElement, RevilationPad masterPad) {
             this.revitElement = revitElement;
             this.isMaster = masterPad == null || this.revitElement == masterPad.RevitElement;
@@ -27,6 +30,14 @@ namespace Revilations.Revit {
             get { return this.transform; }
         }
 
+        public XYZ Translation {
+            get { return this.translationVector; }
+        }
+
+        public double Rotation {
+            get { return this.rotation; }
+        }
+
         public XYZ CenterPoint {
             get {
                 var bb = this.revitElement.get_BoundingBox(null);
@@ -35,9 +46,11 @@ namespace Revilations.Revit {
         }
 
         Transform CalculateTransform(RevilationPad masterPad) {
-            var translation = Transform.CreateTranslation(masterPad.CenterPoint - this.CenterPoint);
-            var rotation = Transform.CreateRotation(XYZ.BasisZ, 0.0);
-            return translation.Multiply(rotation);
+            this.translationVector = this.CenterPoint - masterPad.CenterPoint;
+            var translationTransform = Transform.CreateTranslation(this.translationVector);
+            this.rotation = 0.0;
+            var rotationTransform = Transform.CreateRotation(XYZ.BasisZ, this.rotation);
+            return translationTransform.Multiply(rotationTransform);
         }
     }
 }
