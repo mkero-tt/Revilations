@@ -65,11 +65,20 @@
       <Link>RevilationsInputControl.xaml.cs</Link>
       <DependentUpon>RevilationsInputControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="..\Revilations.Revit\ViewSelectorControl.xaml.cs">
+      <Link>ViewSelectorControl.xaml.cs</Link>
+      <DependentUpon>ViewSelectorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="..\Revilations.Revit\RevilationsInputControl.xaml">
       <Link>RevilationsInputControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\Revilations.Revit\ViewSelectorControl.xaml">
+      <Link>ViewSelectorControl.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
