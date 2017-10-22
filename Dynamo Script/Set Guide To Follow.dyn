@@ -1,4 +1,4 @@
-<Workspace Version="1.3.2.2480" X="-274.653643998697" Y="-125.132844724668" zoom="0.625317083466676" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="False">
+<Workspace Version="1.3.2.2480" X="-30.653643998697" Y="-86.132844724668" zoom="0.625317083466676" ScaleFactor="1" Name="Home" Description="" RunType="Manual" RunPeriod="1000" HasRunWithoutCrash="True">
   <NamespaceResolutionMap />
   <Elements>
     <Dynamo.Graph.Nodes.ZeroTouch.DSFunction guid="f7df56da-d237-48b2-ab10-0c0cb1c9e085" type="Dynamo.Graph.Nodes.ZeroTouch.DSFunction" nickname="Element.Id" x="424.347816577635" y="337.687957792479" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="true" assembly="RevitNodes.dll" function="Revit.Elements.Element.Id">
@@ -13,13 +13,20 @@
     <CoreNodeModels.FromObject guid="b8191555-47a8-4d00-8542-a845c70b4769" type="CoreNodeModels.FromObject" nickname="String from Object" x="629.336311939634" y="341.194506045059" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="true">
       <PortInfo index="0" default="False" />
     </CoreNodeModels.FromObject>
-    <Dynamo.Nodes.DSModelElementSelection guid="64962285-dd2c-4622-8f3d-e05e9f76dc65" type="Dynamo.Nodes.DSModelElementSelection" nickname="Select Guide" x="133.403060154745" y="376.390994297774" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" />
+    <Dynamo.Nodes.DSModelElementSelection guid="64962285-dd2c-4622-8f3d-e05e9f76dc65" type="Dynamo.Nodes.DSModelElementSelection" nickname="Select Guide" x="133.403060154745" y="376.390994297774" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <instance id="88312330-7271-42ce-845d-1c29e31690d1-000031ac" />
+    </Dynamo.Nodes.DSModelElementSelection>
     <Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction guid="c352fed3-5707-4472-8654-8fd8400fbafb" type="Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction" nickname="String.Join" x="934.744697243847" y="327.371955124692" isVisible="true" isUpstreamVisible="true" lacing="Shortest" isSelectedInput="False" IsFrozen="false" isPinned="false" assembly="DSCoreNodes.dll" function="DSCore.String.Join@string,string[]" inputcount="2">
       <PortInfo index="0" default="False" />
       <PortInfo index="1" default="False" />
     </Dynamo.Graph.Nodes.ZeroTouch.DSVarArgFunction>
     <Dynamo.Graph.Nodes.CodeBlockNodeModel guid="eaf28b60-7ca4-4b01-b245-b09c46022065" type="Dynamo.Graph.Nodes.CodeBlockNodeModel" nickname="Code Block" x="816.600491559503" y="337.369268888043" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="False" IsFrozen="false" isPinned="false" CodeText="&quot;;&#xA;&quot;;" ShouldFocus="false" />
-    <Dynamo.Nodes.DSModelElementsSelection guid="a19ee5f8-f93f-47cf-b289-aecc39eb6385" type="Dynamo.Nodes.DSModelElementsSelection" nickname="Select Copies" x="146.924293168701" y="604.364133883749" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false" />
+    <Dynamo.Nodes.DSModelElementsSelection guid="a19ee5f8-f93f-47cf-b289-aecc39eb6385" type="Dynamo.Nodes.DSModelElementsSelection" nickname="Select Copies" x="146.924293168701" y="604.364133883749" isVisible="true" isUpstreamVisible="true" lacing="Disabled" isSelectedInput="True" IsFrozen="false" isPinned="false">
+      <instance id="88312330-7271-42ce-845d-1c29e31690d1-000031fc" />
+      <instance id="88312330-7271-42ce-845d-1c29e31690d1-00003204" />
+      <instance id="88312330-7271-42ce-845d-1c29e31690d1-0000320c" />
+      <instance id="88312330-7271-42ce-845d-1c29e31690d1-00003218" />
+    </Dynamo.Nodes.DSModelElementsSelection>
   </Elements>
   <Connectors>
     <Dynamo.Graph.Connectors.ConnectorModel start="f7df56da-d237-48b2-ab10-0c0cb1c9e085" start_index="0" end="b8191555-47a8-4d00-8542-a845c70b4769" end_index="0" portType="0" />
@@ -32,14 +39,14 @@
   </Connectors>
   <Notes />
   <Annotations>
-    <Dynamo.Graph.Annotations.AnnotationModel guid="5e21cecd-e90e-4930-90af-11f511e9f479" annotationText="Select Guide" left="123.403060154745" top="330.390994297774" width="189" height="165" fontSize="30" InitialTop="376.390994297774" InitialHeight="149" TextblockHeight="36" backgrouund="#FFC1D676">
+    <Dynamo.Graph.Annotations.AnnotationModel guid="5e21cecd-e90e-4930-90af-11f511e9f479" annotationText="Select Guide" left="123.403060154745" top="330.390994297774" width="182" height="165" fontSize="30" InitialTop="376.390994297774" InitialHeight="149" TextblockHeight="36" backgrouund="#FFC1D676">
       <Models ModelGuid="64962285-dd2c-4622-8f3d-e05e9f76dc65" />
     </Dynamo.Graph.Annotations.AnnotationModel>
     <Dynamo.Graph.Annotations.AnnotationModel guid="5dd9a14b-18a5-4a76-b970-d5a5fe2612af" annotationText="Add new GuideID to all copied guides" left="959.602212049219" top="509.670456922606" width="482.724647708321" height="224.074663167845" fontSize="30" InitialTop="591.670456922606" InitialHeight="172.074663167844" TextblockHeight="72" backgrouund="#FFC1D676">
       <Models ModelGuid="5355d4ce-f5aa-4b7b-8c21-3360fb918a46" />
       <Models ModelGuid="efaae7fe-22eb-4dca-8c2f-764ad9c4d5d0" />
     </Dynamo.Graph.Annotations.AnnotationModel>
-    <Dynamo.Graph.Annotations.AnnotationModel guid="3a89e375-f1de-4cce-bdb0-c4e7afa9be1c" annotationText="Select Copies" left="136.924293168701" top="558.364133883749" width="195" height="165" fontSize="30" InitialTop="604.364133883749" InitialHeight="149" TextblockHeight="36" backgrouund="#FFC1D676">
+    <Dynamo.Graph.Annotations.AnnotationModel guid="3a89e375-f1de-4cce-bdb0-c4e7afa9be1c" annotationText="Select Copies" left="136.924293168701" top="558.364133883749" width="268" height="182" fontSize="30" InitialTop="604.364133883749" InitialHeight="149" TextblockHeight="36" backgrouund="#FFC1D676">
       <Models ModelGuid="a19ee5f8-f93f-47cf-b289-aecc39eb6385" />
     </Dynamo.Graph.Annotations.AnnotationModel>
   </Annotations>
