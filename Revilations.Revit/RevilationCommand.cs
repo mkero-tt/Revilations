@@ -8,6 +8,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using System.Windows;
+using Autodesk.Revit.DB.Structure;
 
 namespace Revilations.Revit {
 
@@ -46,12 +47,19 @@ namespace Revilations.Revit {
                             if (masterElement.Item1.Id.IntegerValue != masterPad.RevitElement.Id.IntegerValue) {
                                 var createdElemIds = "";
                                 foreach (var pad in selectedPads) {
-                                    var createdElem = (masterElement.Item2 == null) ? this.CreateCopyElement(masterElement.Item1, pad) : this.CreateDetailObject(masterElement.Item1, masterElement.Item2, pad, viewToAddComponentsTo);
+                                    var createdElem = (masterElement.Item2 == null) ? 
+                                        this.CreateCopyElement(masterElement.Item1, masterPad, pad) : 
+                                        this.CreateDetailObject(masterElement.Item1, masterElement.Item2, masterPad, pad, viewToAddComponentsTo);
+
                                     createdElem.LookupParameter("RevilationsParents").Set(masterElement.Item1.Id.IntegerValue.ToString());
                                     createdElem.LookupParameter("RevilationsPadId").Set(pad.RevitElement.Id.IntegerValue.ToString());
                                     createdElemIds = $"{createdElemIds};{createdElem.Id.IntegerValue}";
                                 }
+                                var placementPt = ((masterElement.Item1.Location is LocationPoint) ? (masterElement.Item1.Location as LocationPoint).Point : (masterElement.Item1.Location as LocationCurve).Curve.Evaluate(0.5, true));
                                 masterElement.Item1.LookupParameter("RevilationsChildren").Set(createdElemIds);
+                                masterElement.Item1.LookupParameter("RevilationsX").Set($"{placementPt.X}");
+                                masterElement.Item1.LookupParameter("RevilationsY").Set($"{placementPt.Y}");
+                                masterElement.Item1.LookupParameter("RevilationsZ").Set($"{placementPt.Z}");
                             }
                         }
                         trans.Commit();
@@ -92,15 +100,28 @@ namespace Revilations.Revit {
             return detailComps;
         }
 
-        FamilyInstance CreateCopyElement(FamilyInstance elem, RevilationPad pad) {
-            return elem.Document.GetElement(ElementTransformUtils.CopyElement(elem.Document, elem.Id, pad.Translation).FirstOrDefault()) as FamilyInstance;
+        FamilyInstance CreateCopyElement(FamilyInstance elem, RevilationPad masterPad, RevilationPad pad) {
+            var doc = elem.Document;
+            var placement = ((elem.Location is LocationPoint) ? (elem.Location as LocationPoint).Point : (elem.Location as LocationCurve).Curve.Evaluate(0.5, true));
+            var remappedPoint = pad.CalculatePlacementLocation(placement, masterPad);
+
+            if (!elem.Symbol.IsActive) {
+                elem.Symbol.Activate();
+            }
+            return doc.Create.NewFamilyInstance(remappedPoint, elem.Symbol, StructuralType.NonStructural);
+
+            //return elem.Document.GetElement(ElementTransformUtils.CopyElement(elem.Document, elem.Id, pad.Translation).FirstOrDefault()) as FamilyInstance;
         }
 
-        FamilyInstance CreateDetailObject(FamilyInstance elem, FamilySymbol symbol, RevilationPad pad, View viewToPlaceOn) {
+        FamilyInstance CreateDetailObject(FamilyInstance elem, FamilySymbol symbol, RevilationPad masterPad, RevilationPad pad, View viewToPlaceOn) {
             var doc = elem.Document;
-            var elemPt = (elem.Location is LocationPoint) ? (elem.Location as LocationPoint).Point : (elem.Location as LocationCurve).Curve.Evaluate(0.5, true);
-            //var transformedLocation = pad.Transform.OfPoint(elemPt);
-            return doc.Create.NewFamilyInstance(elemPt + pad.Translation, symbol, viewToPlaceOn);
+            var placement = ((elem.Location is LocationPoint) ? (elem.Location as LocationPoint).Point : (elem.Location as LocationCurve).Curve.Evaluate(0.5, true));
+            var remappedPoint = pad.CalculatePlacementLocation(placement, masterPad);
+
+            if (!symbol.IsActive) {
+                symbol.Activate();
+            }
+            return doc.Create.NewFamilyInstance(remappedPoint, symbol, viewToPlaceOn);
         }
 
         void SetElementDatas(FamilyInstance elem, FamilyInstance parentElement, RevilationPad pad) {
