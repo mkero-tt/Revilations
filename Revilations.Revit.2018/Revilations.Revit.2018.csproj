@@ -52,14 +52,20 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Revilations.Revit\Objects\RevilationElement.cs">
+      <Link>Objects\RevilationElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Revilations.Revit\Objects\RevilationElements.cs">
+      <Link>Objects\RevilationElements.cs</Link>
+    </Compile>
+    <Compile Include="..\Revilations.Revit\Objects\RevilationPad.cs">
+      <Link>Objects\RevilationPad.cs</Link>
+    </Compile>
     <Compile Include="..\Revilations.Revit\RevilationApplication.cs">
       <Link>RevilationApplication.cs</Link>
     </Compile>
     <Compile Include="..\Revilations.Revit\RevilationCommand.cs">
       <Link>RevilationCommand.cs</Link>
-    </Compile>
-    <Compile Include="..\Revilations.Revit\RevilationPad.cs">
-      <Link>RevilationPad.cs</Link>
     </Compile>
     <Compile Include="..\Revilations.Revit\RevilationsInputControl.xaml.cs">
       <Link>RevilationsInputControl.xaml.cs</Link>

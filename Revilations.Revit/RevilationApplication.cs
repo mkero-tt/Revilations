@@ -6,35 +6,56 @@ using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Events;
 using Autodesk.Revit.UI;
+using Revilations.Objects.Revit;
+using Revilations.Revit.Objects;
 
 namespace Revilations.Revit {
+
     public class RevilationApplication : IExternalApplication {
+
+        internal static RevilationApplication Application;
+        private RevilationElements elements;
+
         public Result OnShutdown(UIControlledApplication application) {
             application.ControlledApplication.DocumentChanged -= this.ControlledApplicationOnDocumentChanged;
             return Result.Succeeded;
         }
 
         public Result OnStartup(UIControlledApplication application) {
+            Application = this;
             application.ControlledApplication.DocumentChanged += this.ControlledApplicationOnDocumentChanged;
             return Result.Succeeded;
         }
 
+        public void AddElements(List<RevilationElement> elems) {
+            foreach (var elem in elems) {
+                this.elements.AddElements(elems);
+            }
+        }
+
+        #region event handlers
         private void ControlledApplicationOnDocumentChanged(object sender, DocumentChangedEventArgs documentChangedEventArgs) {
             var doc = documentChangedEventArgs.GetDocument();
-            this.HandleDeletedElements(doc, documentChangedEventArgs.GetDeletedElementIds());
-            this.HandleChangedElements(doc, documentChangedEventArgs.GetModifiedElementIds());
+            this.HandleDeletedElements(documentChangedEventArgs.GetDeletedElementIds());
+            this.HandleChangedElements(documentChangedEventArgs.GetModifiedElementIds());
         }
 
-        void HandleDeletedElements(Document doc, ICollection<ElementId> deletedElementIds) {
+        void HandleDeletedElements(ICollection<ElementId> deletedElementIds) {
             foreach (var id in deletedElementIds) {
-                var elem = doc.GetElement(id);
+                if (this.elements.ContainsKey(id)) {
+                    var idList = this.elements[id].DeleteChildren();
+                    //foreach()
+                }
             }
         }
 
-        void HandleChangedElements(Document doc, ICollection<ElementId> changedElementIds) {
+        void HandleChangedElements(ICollection<ElementId> changedElementIds) {
             foreach (var id in changedElementIds) {
-                var elem = doc.GetElement(id);
+                if (this.elements.ContainsKey(id)) {
+                    this.elements[id].UpdateChildren();
+                }
             }
         }
+        #endregion
     }
 }

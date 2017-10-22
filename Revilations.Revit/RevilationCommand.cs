@@ -8,8 +8,9 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using System.Windows;
+using Revilations.Revit;
 
-namespace Revilations.Revit {
+namespace Revilations.Objects.Revit {
 
     [Transaction(TransactionMode.Manual)]
     public class RevilationCommand : IExternalCommand {
@@ -44,14 +45,17 @@ namespace Revilations.Revit {
                         trans.Start("Revilations");
                         foreach (var masterElement in masterElements) {
                             if (masterElement.Item1.Id.IntegerValue != masterPad.RevitElement.Id.IntegerValue) {
-                                var createdElemIds = "";
+                                var masterElem = new RevilationElement(masterElement.Item1, null, null, masterPad);
+                                var createdElems = new List<RevilationElement>();
                                 foreach (var pad in selectedPads) {
                                     var createdElem = (masterElement.Item2 == null) ? this.CreateCopyElement(masterElement.Item1, pad) : this.CreateDetailObject(masterElement.Item1, masterElement.Item2, pad, viewToAddComponentsTo);
-                                    createdElem.LookupParameter("RevilationsParents").Set(masterElement.Item1.Id.IntegerValue.ToString());
-                                    createdElem.LookupParameter("RevilationsPadId").Set(pad.RevitElement.Id.IntegerValue.ToString());
-                                    createdElemIds = $"{createdElemIds};{createdElem.Id.IntegerValue}";
+                                    var revElem = new RevilationElement(createdElem, masterElem, null, pad);
+                                    createdElems.Add(revElem);
                                 }
-                                masterElement.Item1.LookupParameter("RevilationsChildren").Set(createdElemIds);
+                                foreach (var e in createdElems) {
+                                    masterElem.Children.Add(e);
+                                }
+                                RevilationApplication.Application.AddElements(createdElems);
                             }
                         }
                         trans.Commit();
